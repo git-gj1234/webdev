@@ -47,7 +47,7 @@ if($_POST && isset($_POST['name'],$_POST['password'])) {
     <body>
     <div class="row">
        
-        <div class="col-md-12">
+        <div class="col-md-6">
             <div id = 'logo'><img src="images/LlogoT.png" width="400px"></div>
         
     

@@ -5,7 +5,7 @@ if($_POST && isset($_POST['Logout'])) {
     session_start();
     session_unset();
     session_destroy();
-    header("Location: home1.php");
+    header("Location: login.php");
     
 }
 ?>
