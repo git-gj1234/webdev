@@ -84,18 +84,22 @@ if(!$conn){
             Your Orders
         </h1>
 
-        <ul class="list-group">
-            <li class="list-group-item">
-                <div class="order headings">
-                    <div>Order ID</div>
-                    <div>Ordering Date</div>
-                    <div>Date of Delivery</div>
-                    <div>Status</div>
-                    <div>Total</div>
-                    <div>Delivery<br> personnel</div>
-                    <div>Delivery<br> Contact</div>
+        <div class="table-responsive">          
+            <table class="table  ">
+            <thead class="table-dark ">
+                <tr><td></td><td>
+                <div class="row"  style="text-align: center;">
+                    <div class="col-xs-1">Order ID</div>
+                    <div class="col-xs-2">Ordering Date</div>
+                    <div class="col-xs-2">Date of Delivery</div>
+                    <div class="col-xs-1">Status</div>
+                    <div class="col-xs-1">Total</div>
+                    <div class="col-xs-3">Delivery personnel</div>
+                    <div class="col-xs-2">Delivery Contact</div>
                 </div>
-            </li>
+                </td><td></td></tr>
+        </thead>
+        <tbody>
         <?php
         $sql0 = "SELECT * from orders WHERE UID = $uid order by OID desc;";
         $retval0 = mysqli_query($conn,$sql0);
@@ -127,60 +131,69 @@ if(!$conn){
                 }
 
                 echo '
-                <li class="list-group-item">
-                        <details>
-                            <summary>
-                                <div class="order">
-                                    <div>',$oid,'</div>
-                                    <div>',$doo,'</div>
-                                    <div>',$dod,'</div>
-                                    <div>',$stat,'</div>
-                                    <div><span>&#8377;</span>',$price,'</div>                                    
-                                    <div id = \'orderID\'>',$name,'</div>
-                                    <div>',$phone,'</div>
+                <tr><td><span class="material-symbols-outlined">
+                expand_circle_down
+                </span></td></td>
+                        
+                            <td> <details><summary><div class="row" style="text-align: center;">
+                                    <div class="col-xs-1" >',$oid,'</div>
+                                    <div class="col-xs-2" >',$doo,'</div>
+                                    <div class="col-xs-2" >',$dod,'</div>
+                                    <div class="col-xs-1" >',$stat,'</div>
+                                    <div class="col-xs-1" ><span>&#8377;</span>',$price,'</div>                                    
+                                    <div class="col-xs-3"  id = \'orderID\'>',$name,'</div>
+                                    <div class="col-xs-2" >',$phone,'</div>
                                 </div>
                             </summary>
-                            <table class = "table-responsive table-sm table-hover">
+                            <div class="table-responsive">          
+                            <table class="table table-hover ">
+                            <thead>
                                 <tr>
-                                    <th>Product</th>
-                                    <th>Price</th>
-                                    <th>Quantity</th>
-                                    <th>Total Amount</th>
+                                    <th >Product</th>
+                                    <th >Price</th>
+                                    <th >Quantity</th>
+                                    <th >Amount</th>
                                 </tr>
-                            ';
-                            $sql3 = "SELECT * from bills WHERE OID = $oid;";
-                            $retval3 = mysqli_query($conn,$sql3);
-                            if(mysqli_num_rows($retval3)>0){
-                                while($row3 = mysqli_fetch_assoc($retval3)){
-
-                                    $PIDd = $row3['PID'];
-                                    $sub_query = "SELECT name,price,link from store_inv where store_inv.PID = '$PIDd';";
-                                    $retval4 = mysqli_query($conn,$sub_query);
-                                    $row4 = mysqli_fetch_assoc($retval4);
-                                    $pic = $row4['link'];
-
-                                    echo '
-                                    <tr>
-                                            <td><br>';
-                                            echo "<img src=\"$pic\" class ='item-pic'>";
-                                            echo $row4['name'],'</td>
-                                            <td><br><span>&#8377;</span>',$row4['price'],'</td>
-                                            <td><br>',$row3['quan'],'</td>
-                                            <td><br><span>&#8377;</span>',$row3['price'],'</td>
-                                    </tr>';
+                            </thead>
+                            <tbody>';?>
+                                <?php
+                                $sql1 = "Select s.link,s.name,s.price,c.quan,c.price as amt from store_inv s, bills c where c.pid=s.pid and c.oid=$oid";
+                                $retval1 = mysqli_query($conn, $sql1);
+                  
+                                if(mysqli_num_rows($retval1)>0) {
+                                    while ($row1 = mysqli_fetch_assoc($retval1)){
+                                        ?>
+                                        <tr>
+                                        <td><img src="<?php echo  $row1['link'] ?>"  width="30px" height="auto">
+                                            <?php echo  $row1['name'] ?></td>
+                                        <td><span>&#8377;</span><?php echo  $row1['price'] ?></td>
+                                        <td><?php echo  $row1['quan'] ?></td>
+                                        <td><span>&#8377;</span><?php echo $row1['amt'] ?></td>
+                                        </tr>
+                                        <?php
+                                    }
                                 }
-                            }
-                            echo'
-                                <tr >
-                                    <td colspan = "3">Total</td>
-                                    <td><span>&#8377;</span>',$price,'</td>
+                                ?>
+                                <tr>
+                                  <td colspan="3">Delivery charges : </td>
+                                  <td><span>&#8377;</span><s>40</s><span>&#8377;</span>0</td>
                                 </tr>
+                                
+                                    
+                            </tbody>
                             </table>
+                        </div>
                         </details>
-                    </li>
-                ';}
-            echo'</ul>';}
+                        </td><td></td>
+                        </tr>
+                        
+                   
+                <?php }
+            }
+            
         ?>
+        </tbody>
+  </table>
     </div>
 
 

@@ -71,7 +71,7 @@ if (!isset($_SESSION['UID'])) {
                     }
                     else{
                         echo"
-                        <li><a class = 'dropdown-item' href=\"selector.php\">Login</a></li>
+                        <li><a class = 'dropdown-item' href=\"login.php\">Login</a></li>
                         <li><a class = 'dropdown-item' href=\"signup.php\">Signup</a></li>
                         ";
                     }
@@ -100,9 +100,7 @@ if (!isset($_SESSION['UID'])) {
                             echo '<p class = "cart-num">0</p>';
                         }
                     }
-                    else{
-                            echo "<p class ='signin-cart-num' >Sign in to use cart</p>";
-                    }
+                    
                     ?>
                 </div>
             </div>
@@ -154,6 +152,8 @@ if (!isset($_SESSION['UID'])) {
             echo "</td>";
             echo "<td class=\"tr\" >";
             $pid = $row["PID"];
+            $store_quan=$row["quan"];
+            //echo $store_quan;
             
 
             $sql4 = "SELECT quan FROM CART where UID=$uid and PID='$pid'"; 
@@ -161,25 +161,48 @@ if (!isset($_SESSION['UID'])) {
             if(mysqli_num_rows($retval4) > 0) {
               $row4 = mysqli_fetch_assoc($retval4);
               $quan = $row4["quan"];
-              $a="cart";
+              if($store_quan>$quan){
+                $a="cart";
                 $a .=$pid;
-              ?>
-            <div id="<?php echo $a; ?>" class="btn-group btn-group-xs">
-            <button id="minus" class="btn btn-primary" onclick="updateCart('subraction1.php', <?php echo $uid; ?>, '<?php echo $pid; ?>','<?php echo $a; ?>')" data-uid="<?php echo $uid; ?>" data-pid="<?php echo $pid; ?>">-</button>
-            <span id="quan" class="btn btn-default  "><?php echo $quan; ?></span>
-            <button id="plus" class="btn btn-primary" onclick="updateCart('addition1.php', <?php echo $uid; ?>, '<?php echo $pid; ?>','<?php echo $a; ?>')" data-uid="<?php echo $uid; ?>" data-pid="<?php echo $pid; ?>">+</button>
+                ?>
+                <div id="<?php echo $a; ?>" class="btn-group btn-group-xs">
+                <button id="minus" class="btn btn-primary" onclick="updateCart('subraction1.php', <?php echo $uid; ?>, '<?php echo $pid; ?>','<?php echo $a; ?>')" data-uid="<?php echo $uid; ?>" data-pid="<?php echo $pid; ?>">-</button>
+                <span id="quan" class="btn btn-default  "><?php echo $quan; ?></span>
+                <button id="plus" class="btn btn-primary" onclick="updateCart('addition1.php', <?php echo $uid; ?>, '<?php echo $pid; ?>','<?php echo $a; ?>')" data-uid="<?php echo $uid; ?>" data-pid="<?php echo $pid; ?>">+</button>
+                </div>
+              <?php
+              }else{ 
+                $a="cart";
+                $a .=$pid; ?>
+              
+                <div id="<?php echo $a; ?>" class="btn-group btn-group-xs">
+                <button id="minus" class="btn btn-primary" onclick="updateCart('subraction1.php', <?php echo $uid; ?>, '<?php echo $pid; ?>','<?php echo $a; ?>')" data-uid="<?php echo $uid; ?>" data-pid="<?php echo $pid; ?>">-</button>
+                <span id="quan" class="btn btn-default  "><?php echo $quan; ?></span>
+                <button id="plus" disabled class="btn btn-primary" onclick="updateCart('addition1.php', <?php echo $uid; ?>, '<?php echo $pid; ?>','<?php echo $a; ?>')" data-uid="<?php echo $uid; ?>" data-pid="<?php echo $pid; ?>">+</button>
+                </div>
+              
+            <?php } } else {
+
+                  if ($store_quan>0){
+                    $a="cart";
+                    $a .=$pid;
+                    ?>
+                    <div id="<?php echo $a; ?>">
+                        <button id="add" class ='btn btn-sm btn-primary' onclick="updateCart('addition1.php', <?php echo $uid; ?>, '<?php echo $pid; ?>','<?php echo $a; ?>')" data-uid="<?php echo $uid; ?>" data-pid="<?php echo $pid; ?>">Add</button>
                     </div>
-                    <?php } else {
-                        $a="cart";
-                        $a .=$pid;
-                        ?>
-
-            <div id="<?php echo $a; ?>">
-                <button id="add" class ='btn btn-sm btn-primary' onclick="updateCart('addition1.php', <?php echo $uid; ?>, '<?php echo $pid; ?>','<?php echo $a; ?>')" data-uid="<?php echo $uid; ?>" data-pid="<?php echo $pid; ?>">Add</button>
-            </div>
-
-                <?php
+                  <?php
+                  } else { 
+                    $a="cart";
+                    $a .=$pid;
+                    ?>
+                  
+                    <div id="<?php echo $a; ?>">
+                        <button id="add" disabled class ='btn btn-sm btn-primary' onclick="updateCart('addition1.php', <?php echo $uid; ?>, '<?php echo $pid; ?>','<?php echo $a; ?>')" data-uid="<?php echo $uid; ?>" data-pid="<?php echo $pid; ?>">Add</button>
+                    </div>
+                  
+                <?php }
             }
+            
             
 
 
@@ -198,101 +221,112 @@ if (!isset($_SESSION['UID'])) {
         }
             echo "</div>";
     }
+
     $sql0 = "SELECT distinct(category) from STORE_INV"; 
     $retval0 = mysqli_query($conn,$sql0);
 
-
-    if(mysqli_num_rows($retval0)>0){
-        echo "<div class=\"flex-container\" id = 'category'>";
+    if(mysqli_num_rows($retval0) > 0){
+        echo "<div class=\"flex-container\" id='category'>";
         while($row0 = mysqli_fetch_assoc($retval0)){
             echo "<div class=\"categ\">";
             $v0 = $row0['category'];
-            $v2= explode(" ",$v0)[0];
-            ?>
-            <form method = "post">
-            <input type = "submit" value = <?php echo"'$v0'"?> name = <?php echo "'$v2'"?> >
+            $v2 = explode(" ", $v0)[0];
+    ?>
+            <form method="post">
+                <input type="submit" value=<?php echo "'$v0'" ?> name=<?php echo "'$v2'" ?>>
             </form>
-            <?php
+    <?php
             echo "</div>";    
         }
         echo "</div>";
     }
 
-   
+    if($_POST && isset($_POST['search'])){
+        $value_filter = $_POST['search'];
+        $query = "SELECT * from store_inv where concat(Name) LIKE '%$value_filter%'";
+        $retval = mysqli_query($conn, $query);
 
-    if($_POST && isset($_POST['search']))
-    {
-            $value_filter= $_POST['search'];
-            // echo $value_filter;
+        if(mysqli_num_rows($retval) > 0){
+            display($retval);
+            echo "<div class=\"end-results\">";
+            echo "<img src=\"images/no_res.png\" alt=\"Grocery basket\">";
+            echo "<p>End of search results</p>";
+            echo "</div>";
+        }
+        else{
+            echo "<div class=\"end-results\">";
+            echo "<img src=\"images/no_res.png\" alt=\"Grocery basket\">";
+            echo "<p>We don't seem to offer $value_filter at the moment</p>";
+            echo "</div>";
+        }
 
-            $query = "Select * from store_inv where concat(Name) LIKE '%$value_filter%'";
-            $retval = mysqli_query($conn,$query);
+        $sql = "SELECT * from STORE_INV";
+        $retval = mysqli_query($conn, $sql);
 
-    if(mysqli_num_rows($retval)>0){
-        
-        display($retval);
-        echo "<div class=\"end-results\">";
-    echo "<img src=\"images/no_res.png\" alt=\"Grocery basket\">";
-    echo "<p>End of search results</p>";
-    echo "</div>";
+        if(mysqli_num_rows($retval) > 0){
+            display($retval);
+        }
     }
     else{
-        echo "<div class=\"end-results\">";
-    echo "<img src=\"images/no_res.png\" alt=\"Grocery basket\">";
-    echo "<p>we dont seem to offer $value_filter at the moment</p>";
-    echo "</div>";
-    }
-    $sql = "SELECT * from STORE_INV";
-                $retval = mysqli_query($conn,$sql);
-            
-            if(mysqli_num_rows($retval)>0){
-                
-                display($retval);
-            }
-            
-    }
-    else{
-
         $sql0 = "SELECT distinct(category) from STORE_INV"; 
-        $retval0 = mysqli_query($conn,$sql0); 
+        $retval0 = mysqli_query($conn, $sql0); 
         $r = 0;   
         while($row0 = mysqli_fetch_assoc($retval0)){
-            $v2=$row0['category'];
-            //echo"$v2";
+            $v2 = $row0['category'];
             $v1 = $row0['category'];
-            $v1=explode(" ",$v1)[0];
-            //echo "$v1";
-            // echo "$v1";
+            $v1 = explode(" ", $v1)[0];
+
             if(isset($_POST["$v1"])){
-                // echo"ye boiiiiiiii";
                 $r = 1;
-                
                 $sql = "SELECT * from STORE_INV where category like '$v1%'";
-                
-    $retval = mysqli_query($conn,$sql);
-    if(mysqli_num_rows($retval)>0){
-        
-        display($retval);
-        echo "<div class=\"end-results\">";
-    echo "<img src=\"images/no_res.png\" alt=\"Grocery basket\">";
-    echo "<p>End of search results</p>";
-    echo "</div>";
+                $retval = mysqli_query($conn, $sql);
+                if(mysqli_num_rows($retval) > 0){
+                    display($retval);
+                    echo "<div class=\"end-results\">";
+                    echo "<img src=\"images/no_res.png\" alt=\"Grocery basket\">";
+                    echo "<p>End of search results</p>";
+                    echo "</div>";
+                }
+            }
+        }
 
-    }
-    }
-            }
+        if ($uid!=1){
+        ?>
 
-            //if(!$r){
-                $sql = "SELECT * from STORE_INV";
-                $retval = mysqli_query($conn,$sql);
-            
-            if(mysqli_num_rows($retval)>0){
-                
-                display($retval);
-            }
-            }
-        mysqli_close($conn);
+        <div style="text-align:center; background-color: #f1dede; margin:0; padding:0;">
+            <h3><b>Your go-to items - </b></h3><p> Based on your ordering prefernces </p>
+        </div>
+        <?php
+        $recq="select s.pid as PID, s.quan, s.name as Name, sum(b.quan),s.info, s.link, s.price 
+                from bills b, orders o, store_inv s
+                where s.pid=b.PID
+                and o.oid=b.OID
+                and o.uid=2
+                group by b.PID
+                order by sum(b.quan) desc
+                Limit 5";
+        $recretval =  mysqli_query($conn, $recq);
+        if(mysqli_num_rows($recretval) > 0){
+            display($recretval);
+        }
+
+         ?>
+         
+        <div style="text-align:center; background-color: #f1dede; margin:0px; padding:0px;">
+            <p> Our other products </p>
+        </div>
+        <?php
+        }
+        $sql = "SELECT * from STORE_INV";
+        $retval = mysqli_query($conn, $sql);
+
+        if(mysqli_num_rows($retval) > 0){
+            display($retval);
+        }
+    }
+
 ?>
+
 
     <footer id = 'footer-toggle'>
         <div class="footer-content" >
@@ -302,33 +336,33 @@ if (!isset($_SESSION['UID'])) {
                     <div>Customer Service</div>
                     <div>
                         <div class="material-symbols-outlined">support_agent</div>
-                        <div>Amal</div>
+                        <div>Amal (1BM21AI013)</div>
                     </div>
                     <div>
                         <div class="material-symbols-outlined">mail</div>
-                        <div>amal.ai21@bmsce.ac.in</div>
+                        <div><a href="mailto:amal.ai21@bmsce.ac.in">amal.ai21@bmsce.ac.in</a></div>
                     </div>
                 </div>
                 <div class="mail-item">
                     <div>Delivery</div>
                     <div>
                         <div class="material-symbols-outlined">support_agent</div>
-                        <div>Chetna</div>
+                        <div>Chetna (1BM21AI036)</div>
                     </div>
                     <div>
                         <div class="material-symbols-outlined">mail</div>
-                        <div>chetna.ai21@bmsce.ac.in</div>
+                        <div><a href="mailto:chetna.ai21@bmsce.ac.in">chetna.ai21@bmsce.ac.in</a></div>
                     </div>
                 </div>
                 <div class="mail-item">
                     <div>TroubleShooting</div>
                     <div>
                         <div class="material-symbols-outlined">support_agent</div>
-                        <div>Adithya</div>
+                        <div>Adithya (1BM21AI036)</div>
                     </div>
                     <div>
                         <div class="material-symbols-outlined">mail</div>
-                        <div>adityagy.ai21@bmsce.ac.in</div>
+                        <div><a href="mailto:adithyagy.ai21@bmsce.ac.in">adithyagy.ai21@bmsce.ac.in</a></div>
                     </div>
                 </div>
             </div>
@@ -349,8 +383,8 @@ if (!isset($_SESSION['UID'])) {
                 <div class="footer-menu">
                     <ul class="f-menu">
                     <li><a href="">Home</a></li>
-                    <li><a href="">About</a></li>
-                    <li><a href="">Contact</a></li>
+                    <li><a href="https://docs.google.com/document/d/1JZd4O3NVBX2GBIQ-HLqVd4KrAN1kr4AxO3bGMPVKG18/edit?usp=sharing">About</a></li>
+                    <li><a href="mailto:adithyagy.ai21@bmsce.ac.in">Contact</a></li>
                     </ul>
                 </div>
     </div>
@@ -360,7 +394,7 @@ if (!isset($_SESSION['UID'])) {
         <p>shopping cart</p>
         <div id = 'close' onclick = 'Sidebar()'>&times;</div>
         <div class="table-responsive" id="recentcart">
-        
+    
         <table class="table ">
             <thead><tr>
                 <th>Item</th>
@@ -370,16 +404,7 @@ if (!isset($_SESSION['UID'])) {
             </thead>
             <tbody>
             <?php
-            $host = "localhost";
-            $user = "root";
-            $pass = "";
-            $database = "STORE";
-            $conn = mysqli_connect($host, $user, $pass, $database);
-            if (!$conn) {
-                die('Could not connect: '.mysqli_connect_error());
-            }
-            
-            $sql5 = "SELECT s.pid, s.link,s.price,s.name,c.quan,c.price as amt from store_inv s, cart c where s.pid=c.pid and c.uid=$uid"; 
+            $sql5 = "SELECT s.pid,s.quan as store_quan, s.link,s.price,s.name,c.quan,c.price as amt from store_inv s, cart c where s.pid=c.pid and c.uid=$uid"; 
             $retval5 = mysqli_query($conn, $sql5);
             $total = 0;
             if (mysqli_num_rows($retval5) > 0) {
@@ -390,46 +415,68 @@ if (!isset($_SESSION['UID'])) {
                     $name = $row5['name'];
                     $quan = $row5['quan'];
                     $amt = $row5['amt'];
+                    $store_quan=$row5['store_quan'];
                     $total += $amt;
                     echo "<tr class = 'cart-item'>";
                     echo "<td><img src=\"$link\" style=\"width:20px;height:20px;\">$name</td>";
                     echo "<td>$price</td>";
-                    $a="cart";
-                    $a .=$pid;
-                ?><td>
-        <div id="<?php echo $a; ?>"class="btn-group btn-group-xs">
-        <button id="minus" class="btn btn-primary" onclick="updateCart('subraction1.php', <?php echo $uid; ?>, '<?php echo $pid; ?>','<?php echo $a; ?>')" data-uid="<?php echo $uid; ?>" data-pid="<?php echo $pid; ?>">-</button>
-        <span id="quan" class="btn btn-default  "><?php echo $quan; ?></span>
-        <button id="plus" class="btn btn-primary" onclick="updateCart('addition1.php', <?php echo $uid; ?>, '<?php echo $pid; ?>','<?php echo $a; ?>')" data-uid="<?php echo $uid; ?>" data-pid="<?php echo $pid; ?>">+</button>
-    </div></td>
-    <?php
+                    if($store_quan>$quan){
+                        $a="cart";
+                        $a .=$pid;
+                        ?><td>
+                        <div id="<?php echo $a; ?>" class="btn-group btn-group-xs">
+                        <button id="minus" class="btn btn-primary" onclick="updateCart('subraction1.php', <?php echo $uid; ?>, '<?php echo $pid; ?>','<?php echo $a; ?>')" data-uid="<?php echo $uid; ?>" data-pid="<?php echo $pid; ?>">-</button>
+                        <span id="quan" class="btn btn-default  "><?php echo $quan; ?></span>
+                        <button id="plus" class="btn btn-primary" onclick="updateCart('addition1.php', <?php echo $uid; ?>, '<?php echo $pid; ?>','<?php echo $a; ?>')" data-uid="<?php echo $uid; ?>" data-pid="<?php echo $pid; ?>">+</button>
+                        </div></td>
+                    <?php
+                    }else{ 
+                        $a="cart";
+                        $a .=$pid; 
+                        ?>
+                        <td>
+                        <div id="<?php echo $a; ?>" class="btn-group btn-group-xs">
+                        <button id="minus" class="btn btn-primary" onclick="updateCart('subraction1.php', <?php echo $uid; ?>, '<?php echo $pid; ?>','<?php echo $a; ?>')" data-uid="<?php echo $uid; ?>" data-pid="<?php echo $pid; ?>">-</button>
+                        <span id="quan" class="btn btn-default  "><?php echo $quan; ?></span>
+                        <button id="plus" disabled class="btn btn-primary" onclick="updateCart('addition1.php', <?php echo $uid; ?>, '<?php echo $pid; ?>','<?php echo $a; ?>')" data-uid="<?php echo $uid; ?>" data-pid="<?php echo $pid; ?>">+</button>
+                        </div></td>
+                    
+                    <?php } 
                     echo "<td>$amt</td>";
                     echo "</tr>";
                 }
             }
             mysqli_close($conn);
-            ?> 
+            ?>
             <tr class = 'cart-item'>
-                <td colspan="2">Total:</td>
-                <td id = 'cartItems'></td>
+                <td colspan="3">Total:</td>
                 <td><?php echo $total; ?></td>
                 
             </tr>
             <tr id = 'checkout' class = 'cart-item'>
                 <td colspan = "4"> 
                     
-                    <form action="cart.php" method="post" onsubmit="<?php if($uid == 1) { ?>return showLoginAlert();<?php } ?>">
-                        <input type="hidden" name="uid" value="<?php echo $uid; ?>">
-                        <input class = 'btn ' type="submit" name="submit" value="Proceed to Checkout">
-                    </form>
-                    <?php if($uid == 1) { ?>
-                    <script>
-                        function showLoginAlert() {
-                            alert("Please login first!");
-                            return false;
-                        }
-                    </script>
-                <?php } ?>
+                <form action="cart.php" method="post" onsubmit="<?php if($uid == 1) { ?>return showLoginAlert();<?php } if($total == 0) { ?>return showCartEmptyAlert();<?php } ?>">
+                    <input type="hidden" name="uid" value="<?php echo $uid; ?>">
+                    <input class="btn" type="submit" name="submit" value="Proceed to Checkout">
+            </form>
+
+            <?php if($uid == 1) { ?>
+                <script>
+                    function showLoginAlert() {
+                        alert("Please login first!");
+                        return false;
+                    }
+                </script>
+            <?php } ?>
+
+            <script>
+                function showCartEmptyAlert() {
+                    alert("Your cart is empty. Please add items to proceed to checkout.");
+                    return false;
+                }
+            </script>
+
                 </td>
             </tr>   
         
@@ -437,9 +484,8 @@ if (!isset($_SESSION['UID'])) {
         </tbody>
         </table>
     </div>
-
-    </div>
-
+</div>
 
 <div class="shift"></div>
 </body>
+

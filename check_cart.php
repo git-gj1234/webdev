@@ -1,6 +1,9 @@
 <?php
-global $uid;
+
+$conn = mysqli_connect("localhost", "root", "", "store");
+
 $uid = $_POST['uid']; ?>
+
 <div class="table-responsive" id="recentcart">
     
     <table class="table ">
@@ -12,16 +15,7 @@ $uid = $_POST['uid']; ?>
         </thead>
         <tbody>
         <?php
-        $host = "localhost";
-        $user = "root";
-        $pass = "";
-        $database = "STORE";
-        $conn = mysqli_connect($host, $user, $pass, $database);
-        if (!$conn) {
-            die('Could not connect: '.mysqli_connect_error());
-        }
-        
-        $sql5 = "SELECT s.pid, s.link,s.price,s.name,c.quan,c.price as amt from store_inv s, cart c where s.pid=c.pid and c.uid=$uid"; 
+        $sql5 = "SELECT s.pid,s.quan as store_quan, s.link,s.price,s.name,c.quan,c.price as amt from store_inv s, cart c where s.pid=c.pid and c.uid=$uid"; 
         $retval5 = mysqli_query($conn, $sql5);
         $total = 0;
         if (mysqli_num_rows($retval5) > 0) {
@@ -32,19 +26,33 @@ $uid = $_POST['uid']; ?>
                 $name = $row5['name'];
                 $quan = $row5['quan'];
                 $amt = $row5['amt'];
+                $store_quan=$row5['store_quan'];
                 $total += $amt;
                 echo "<tr class = 'cart-item'>";
                 echo "<td><img src=\"$link\" style=\"width:20px;height:20px;\">$name</td>";
                 echo "<td>$price</td>";
-                $a="cart";
-                $a .=$pid;
-              ?><td>
-    <div id="<?php echo $a; ?>"class="btn-group btn-group-xs">
-    <button id="minus" class="btn btn-primary" onclick="updateCart('subraction1.php', <?php echo $uid; ?>, '<?php echo $pid; ?>','<?php echo $a; ?>')" data-uid="<?php echo $uid; ?>" data-pid="<?php echo $pid; ?>">-</button>
-    <span id="quan" class="btn btn-default  "><?php echo $quan; ?></span>
-    <button id="plus" class="btn btn-primary" onclick="updateCart('addition1.php', <?php echo $uid; ?>, '<?php echo $pid; ?>','<?php echo $a; ?>')" data-uid="<?php echo $uid; ?>" data-pid="<?php echo $pid; ?>">+</button>
-  </div></td>
-<?php
+                if($store_quan>$quan){
+                    $a="cart";
+                    $a .=$pid;
+                    ?><td>
+                    <div id="<?php echo $a; ?>" class="btn-group btn-group-xs">
+                    <button id="minus" class="btn btn-primary" onclick="updateCart('subraction1.php', <?php echo $uid; ?>, '<?php echo $pid; ?>','<?php echo $a; ?>')" data-uid="<?php echo $uid; ?>" data-pid="<?php echo $pid; ?>">-</button>
+                    <span id="quan" class="btn btn-default  "><?php echo $quan; ?></span>
+                    <button id="plus" class="btn btn-primary" onclick="updateCart('addition1.php', <?php echo $uid; ?>, '<?php echo $pid; ?>','<?php echo $a; ?>')" data-uid="<?php echo $uid; ?>" data-pid="<?php echo $pid; ?>">+</button>
+                    </div></td>
+                  <?php
+                  }else{ 
+                    $a="cart";
+                    $a .=$pid; 
+                    ?>
+                    <td>
+                    <div id="<?php echo $a; ?>" class="btn-group btn-group-xs">
+                    <button id="minus" class="btn btn-primary" onclick="updateCart('subraction1.php', <?php echo $uid; ?>, '<?php echo $pid; ?>','<?php echo $a; ?>')" data-uid="<?php echo $uid; ?>" data-pid="<?php echo $pid; ?>">-</button>
+                    <span id="quan" class="btn btn-default  "><?php echo $quan; ?></span>
+                    <button id="plus" disabled class="btn btn-primary" onclick="updateCart('addition1.php', <?php echo $uid; ?>, '<?php echo $pid; ?>','<?php echo $a; ?>')" data-uid="<?php echo $uid; ?>" data-pid="<?php echo $pid; ?>">+</button>
+                    </div></td>
+                  
+                <?php } 
                 echo "<td>$amt</td>";
                 echo "</tr>";
             }
@@ -52,22 +60,39 @@ $uid = $_POST['uid']; ?>
         mysqli_close($conn);
         ?>
         <tr class = 'cart-item'>
-            <td colspan="2">Total:</td>
-            <td id = 'cartItems'></td>
+            <td colspan="3">Total:</td>
             <td><?php echo $total; ?></td>
             
         </tr>
         <tr id = 'checkout' class = 'cart-item'>
             <td colspan = "4"> 
                 
-                <form action="cart.php" method="post">
-                    <input type="hidden" name="uid" value="<?php echo $uid; ?>">
-                    <input class = 'btn ' type="submit" name="submit" value="Proceed to Checkout">
-                </form>
+            <form action="cart.php" method="post" onsubmit="<?php if($uid == 1) { ?>return showLoginAlert();<?php } if($total == 0) { ?>return showCartEmptyAlert();<?php } ?>">
+                <input type="hidden" name="uid" value="<?php echo $uid; ?>">
+                <input class="btn" type="submit" name="submit" value="Proceed to Checkout">
+        </form>
+
+        <?php if($uid == 1) { ?>
+            <script>
+                function showLoginAlert() {
+                    alert("Please login first!");
+                    return false;
+                }
+            </script>
+        <?php } ?>
+
+        <script>
+            function showCartEmptyAlert() {
+                alert("Your cart is empty. Please add items to proceed to checkout.");
+                return false;
+            }
+        </script>
+
             </td>
         </tr>   
-    
-    
     </tbody>
     </table>
 </div>
+
+
+

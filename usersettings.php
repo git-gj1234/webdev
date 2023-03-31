@@ -88,45 +88,47 @@ if (isset($_POST['Logout'])) {
       <form class = 'form-group ' action="user-settings.php" method="post">
         <input type="hidden" name="uid" value="<?php echo $id; ?>">
         <label class="col-sm-2 col-form-label" for="password">Password:</label>
-        <input type="password" id="password" name="password" value="<?php echo $user['password']; ?>"><br>
-        <label class="col-sm-2 col-form-label" for="password">Confirm Password:</label>
-        <input type="password" id="password" name="password" value="<?php echo $user['password']; ?>">
+        <input type="password" id="password" name="password" ><br>
+        <label class="col-sm-2 col-form-label" for="password">Confirm_Password:</label>
+        <input type="password" id="password" name="password">
         <input type="submit" class = 'btn btn-sm' name="submit" value="Update Password">
       </form>
-
-      <form class = 'form-group' action="user-settings.php" method="post"><input type="hidden" name="uid" value="<?php echo $id; ?>">
-        <label class="col-sm-2 col-form-label" for="email">Email:</label>
-        <input type="email" id="email" name="email" value="<?php echo $user['email']; ?>" disabled>
-      </form>
-    </div>
-    <div id="c2">
-      <form  class = 'form-group'action="user-settings.php" method="post">
-        <input type="hidden" name="uid" value="<?php echo $id; ?>">
-        <label class="col-sm-2 col-form-label" for="address">Address line 1:</label>
-        <input type="text" id="address" name="addr_l1" value="<?php echo $user['addr_l1']; ?>">
-        <input type="submit" class = 'btn btn-sm' name="submit" value="Update Address">
-      </form>
-    
-      <form class = 'form-group' action="user-settings.php" method="post">
-        <input type="hidden" name="uid" value="<?php echo $id; ?>">
-        <label class="col-sm-2 col-form-label" for="address">line 2:</label>
-        <input type="text" id="address" name="addr_l2" value="<?php echo $user['addr_l2']; ?>">
-        <input type="submit" class = 'btn btn-sm' name="submit" value="Update Address">
-      </form>
-
-      <form class = 'form-group' action="user-settings.php" method="post">
-      <input type="hidden" name="uid" value="<?php echo $id; ?>">
-        <label class="col-sm-2 col-form-label" for="address">line 3:</label>
-        <input type="text" id="address" name="addr_l3" value="<?php echo $user['addr_l3']; ?>">
-        <input type="submit" class = 'btn btn-sm' name="submit" value='edit'>
-      </form>
-
       <form class = 'form-group' action="user-settings.php" method="post">
         <input type="hidden" name="uid" value="<?php echo $id; ?>">
         <label class="col-sm-2 col-form-label" for="phone">Phone:</label>
         <input type="tel" id="phone" name="phone_number" value="<?php echo $user['phone_number']; ?>">
         <input type="submit" class = 'btn btn-sm' name="submit" value="Update Phone">
       </form>
+
+      
+    </div>
+    <div id="c2">
+    <form class = 'form-group' action="user-settings.php" method="post"><input type="hidden" name="uid" value="<?php echo $id; ?>">
+        <label class="col-sm-2 col-form-label" for="email">Email:</label>
+        <input type="email" id="email" name="email" value="<?php echo $user['email']; ?>" disabled>
+      </form>
+      <form  class = 'form-group'action="user-settings.php" method="post">
+        <input type="hidden" name="uid" value="<?php echo $id; ?>">
+        <label class="col-sm-2 col-form-label" for="address">Address line 1:</label>
+        <input type="text" id="address" name="addr_l1" value="<?php echo $user['addr_l1']; ?>">
+        <input type="submit" class = 'btn btn-sm' name="submit" value="Update Address line 1">
+      </form>
+    
+      <form class = 'form-group' action="user-settings.php" method="post">
+        <input type="hidden" name="uid" value="<?php echo $id; ?>">
+        <label class="col-sm-2 col-form-label" for="address">line 2:</label>
+        <input type="text" id="address" name="addr_l2" value="<?php echo $user['addr_l2']; ?>">
+        <input type="submit" class = 'btn btn-sm' name="submit" value="Update Address  line 2">
+      </form>
+
+      <form class = 'form-group' action="user-settings.php" method="post">
+      <input type="hidden" name="uid" value="<?php echo $id; ?>">
+        <label class="col-sm-2 col-form-label" for="address">line 3:</label>
+        <input type="text" id="address" name="addr_l3" value="<?php echo $user['addr_l3']; ?>">
+        <input type="submit" class = 'btn btn-sm' name="submit" value='Update Address line 3'>
+      </form>
+
+      
     </div>
   </div> 
     

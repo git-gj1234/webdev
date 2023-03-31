@@ -9,6 +9,7 @@
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
     <style>
         
         details > summary {
@@ -22,13 +23,10 @@ details summary::-webkit-details-marker {
 </head>
 <?php
 if($_POST && isset($_POST['Logout'])) { 
-
-
     session_start();
     session_unset();
     session_destroy();
-    header("Location: home1.php");
-    
+    header("Location: home1.php");   
 }
 ?>
 <body>
@@ -76,7 +74,9 @@ $conn = mysqli_connect("localhost", "root", "", "store");
                 while ($row = mysqli_fetch_assoc($retval)){
                     $oid=$row['OID'];
                     ?>
-                    <tr><td></td>
+                    <tr><td><span class="material-symbols-outlined">
+                            expand_circle_down
+                            </span></td>
                     
                      <td> <details><summary><div class="row" style="text-align: center;"> 
                         

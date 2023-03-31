@@ -54,44 +54,34 @@ html,body{
 
 
 
-tbody > tr,td{
-    border-radius: 0;
-}
 
 
-tbody > tr>td,th{
-    width: 20%;
-}
-
-.table-responsive,ul li{
-    max-width:70vw ;
+tr{
     background-color: #f7f7f7;
 }
 
-.table-responsive tbody > tr>td+th{
-    padding:20px 20px;
+table{
+    border-radius:20px;
+}
+
+.submit-btn{
+    background-color: #867070;
+    color:#f7f7f7;
+}
+
+h1{
+    padding:30px;
     margin:10px;
 }
 
-td img{
-    height: 30px;
-    width: 30px;
-    margin: 10px;
-}
-
-
-
-
-tbody > tr td:nth-child(1){
-    width:60%;
-}
-tbody > tr td{
-    width: 20%;
-}
-.table-responsive> tbody > tr:nth-child(1)+th{
-    border:none;
+th{
+    font-weight: normal;
     background-color: #867070;
-    
+}
+thead tr{
+    background-color: #867070;
+    color: #f7f7f7;
+
 }
 
 .final div:nth-child(1){

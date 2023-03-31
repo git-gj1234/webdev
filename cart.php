@@ -179,21 +179,27 @@ if (!isset($_SESSION['UID'])) {
       </div>
     </div>
     <?php
-              $sql5 = "SELECT count(*) as total from cart where uid=$uid";
-              $retval5 = mysqli_query($conn, $sql5);
+      $sql5 = "SELECT count(*) as total from cart where uid=$uid";
+      $retval5 = mysqli_query($conn, $sql5);
 
-              if(mysqli_num_rows($retval5)>0) {
-                  $row5 = mysqli_fetch_assoc($retval5);
-                  global $total;
-                  $total = $row5['total'];   
-              }
-              ?>
+      if(mysqli_num_rows($retval5)>0) {
+          $row5 = mysqli_fetch_assoc($retval5);
+          global $total;
+          $total = $row5['total'];   
+      }
+      ?>
     <div class="row">
       <div class="col-sm-12" style="text-align: center;"> 
-      <form action="checkout.php" method="post" onsubmit="<?php if($total == 0) { ?>return showLoginAlert();<?php } ?>">
+      <form action="checkout.php" method="post" onsubmit="<?php if($total == 0 || !isset($_POST['terms'])) { ?>return showLoginAlert();<?php } ?>">
         <input type="hidden" name="uid" value="<?php echo $uid; ?>">
-        <input class="btn submit-btn"  type="submit" name="submit" value="Confirm Order">
+        <label>
+          <input type="checkbox" name="terms" id="terms" required>
+          I have read and agree to the <a href="#" id="terms-link" target="_blank">terms and conditions</a>.
+        </label>
+        <br>
+        <input class="btn submit-btn" type="submit" name="submit" value="Confirm Order">
       </form>
+
       <?php if($total == 0) { ?>
     <script>
         function showLoginAlert() {
@@ -205,7 +211,42 @@ if (!isset($_SESSION['UID'])) {
       </div>
     </div>
   </div>
-
+  <div class="modal">
+        <div class="modal-content">
+          <h2>Terms and Conditions</h2>
+          <!-- Add the content of your terms and conditions here -->
+        </div>
+      </div>
   
 </body>
+<script>
+  // Get the modal and close button elements
+const modal = document.querySelector('.modal');
+const closeButton = document.createElement('span');
+closeButton.className = 'close-modal';
+closeButton.innerHTML = '&times;';
+
+// Add the close button to the modal content
+modal.querySelector('.modal-content').appendChild(closeButton);
+
+// Open the modal when the terms link is clicked
+document.querySelector('#terms-link').addEventListener('click', function(event) {
+  event.preventDefault();
+  modal.style.display = 'block';
+});
+
+// Close the modal when the overlay or close button is clicked
+modal.addEventListener('click', function(event) {
+  if (event.target === modal || event.target === closeButton) {
+    modal.style.display = 'none';
+  }
+});
+
+// Close the modal when the escape key is pressed
+document.addEventListener('keydown', function(event) {
+  if (event.key === 'Escape') {
+    modal.style.display = 'none';
+  }
+});
+</script>
 </html>
