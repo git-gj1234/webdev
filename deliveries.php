@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -73,7 +74,7 @@ if($_POST && isset($_POST['Logout'])) {
         session_start();
         $conn = mysqli_connect("localhost", "root", "", "store");
         
-        $did=$_SESSION['DID'];
+        $did=$_SESSION["DID"];
          
         $query = "select stat from delivery_personnel where did=$did";
         $retval = mysqli_query($conn,$query);

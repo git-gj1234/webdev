@@ -33,11 +33,11 @@ if($_POST && isset($_POST['name'],$_POST['password'])) {
     if(mysqli_num_rows($retval0)>0){
         $row0 = mysqli_fetch_assoc($retval0);    
         $uid = $row0['DID'];
-        echo $uid;
+       
         $_POST['DID'] = $uid;
-        session_start();
-        $_SESSION = $_POST;
-        session_write_close();    
+
+        $_SESSION["DID"] = $uid;
+        
         header("Location: deliveries.php");
     }
     else{
@@ -79,7 +79,7 @@ if($_POST && isset($_POST['name'],$_POST['password'])) {
             <h1>Login</h1>
             <form method="post" action="login_delivery.php">
                 <div class="type1">
-                    <input type="number" required name = "name" value = "<?php if(isset($_POST['name'])) echo htmlspecialchars($_POST['name'])?>">
+                    <input type="email" required name = "name" value = "<?php if(isset($_POST['name'])) echo htmlspecialchars($_POST['name'])?>">
                     <span></span>
                     <label>Aadhaar Number</label>
                 </div>
