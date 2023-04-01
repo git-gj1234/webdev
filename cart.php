@@ -214,7 +214,13 @@ if (!isset($_SESSION['UID'])) {
   <div class="modal">
         <div class="modal-content">
           <h2>Terms and Conditions</h2>
-          <!-- Add the content of your terms and conditions here -->
+          <ul>
+            <li> No return/cancellation of Order is allowed.</li>
+            <li> Any delay in Delivery of items does not come under our responsibility</li>
+            <li> If items arent fresh/broken, can be replaced by calling our customer service</li>
+            <li> Rate us on google and help us grow</li>
+          </ul>
+
         </div>
       </div>
   

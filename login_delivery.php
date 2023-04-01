@@ -26,7 +26,6 @@ if($_POST && isset($_POST['name'],$_POST['password'])) {
 
         
     }
-
     
     
     $sql2 = "SELECT DID from delivery_personnel WHERE aadhaar = $name and password = '$password'";
@@ -78,9 +77,9 @@ if($_POST && isset($_POST['name'],$_POST['password'])) {
         <div class="col-md-6" id="something" >
         <div class="center">
             <h1>Login</h1>
-            <form method="post" action="admin_login.php">
+            <form method="post" action="login_delivery.php">
                 <div class="type1">
-                    <input type="email" required name = "name" value = "<?php if(isset($_POST['name'])) echo htmlspecialchars($_POST['name'])?>">
+                    <input type="number" required name = "name" value = "<?php if(isset($_POST['name'])) echo htmlspecialchars($_POST['name'])?>">
                     <span></span>
                     <label>Aadhaar Number</label>
                 </div>

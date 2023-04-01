@@ -340,7 +340,7 @@ if (!isset($_SESSION['UID'])) {
                     </div>
                     <div>
                         <div class="material-symbols-outlined">mail</div>
-                        <div><a href="mailto:amal.ai21@bmsce.ac.in">amal.ai21@bmsce.ac.in</a></div>
+                        <div><a style="color:white;" href="mailto:amal.ai21@bmsce.ac.in">amal.ai21@bmsce.ac.in</a></div>
                     </div>
                 </div>
                 <div class="mail-item">
@@ -351,7 +351,7 @@ if (!isset($_SESSION['UID'])) {
                     </div>
                     <div>
                         <div class="material-symbols-outlined">mail</div>
-                        <div><a href="mailto:chetna.ai21@bmsce.ac.in">chetna.ai21@bmsce.ac.in</a></div>
+                        <div><a style="color:white;" href="mailto:chetna.ai21@bmsce.ac.in">chetna.ai21@bmsce.ac.in</a></div>
                     </div>
                 </div>
                 <div class="mail-item">
@@ -362,7 +362,7 @@ if (!isset($_SESSION['UID'])) {
                     </div>
                     <div>
                         <div class="material-symbols-outlined">mail</div>
-                        <div><a href="mailto:adithyagy.ai21@bmsce.ac.in">adithyagy.ai21@bmsce.ac.in</a></div>
+                        <div><a style="color:white;" href="mailto:adithyagy.ai21@bmsce.ac.in">adithyagy.ai21@bmsce.ac.in</a></div>
                     </div>
                 </div>
             </div>
@@ -382,8 +382,8 @@ if (!isset($_SESSION['UID'])) {
         <div id = 'contact' onclick = 'footerToggle()'>&#8679;</div>
                 <div class="footer-menu">
                     <ul class="f-menu">
-                    <li><a href="">Home</a></li>
-                    <li><a href="https://docs.google.com/document/d/1JZd4O3NVBX2GBIQ-HLqVd4KrAN1kr4AxO3bGMPVKG18/edit?usp=sharing">About</a></li>
+                    <li><a href="https://goo.gl/maps/fLnEjcRHiGUgSVBQ7" target=”_blank” >Home</a></li>
+                    <li><a href="https://docs.google.com/document/d/1JZd4O3NVBX2GBIQ-HLqVd4KrAN1kr4AxO3bGMPVKG18/edit?usp=sharing" target=”_blank” >About</a></li>
                     <li><a href="mailto:adithyagy.ai21@bmsce.ac.in">Contact</a></li>
                     </ul>
                 </div>
