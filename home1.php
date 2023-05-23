@@ -301,7 +301,7 @@ if (!isset($_SESSION['UID'])) {
                 from bills b, orders o, store_inv s
                 where s.pid=b.PID
                 and o.oid=b.OID
-                and o.uid=2
+                and o.uid=$uid
                 group by b.PID
                 order by sum(b.quan) desc
                 Limit 5";

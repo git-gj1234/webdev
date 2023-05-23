@@ -219,6 +219,8 @@ if (!isset($_SESSION['UID'])) {
             <li> Any delay in Delivery of items does not come under our responsibility</li>
             <li> If items arent fresh/broken, can be replaced by calling our customer service</li>
             <li> Rate us on google and help us grow</li>
+            <li> Sir give us full marks or ill call reddy anna gang</li>
+            <li> What ra? Sudeep </li>
           </ul>
 
         </div>
