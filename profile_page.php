@@ -1,3 +1,16 @@
+<?php
+ $conn = new mysqli("localhost", "root", "", "store");
+ session_start(); // start the session
+ 
+// set $uid to 1 if the user is not logged in
+if (!isset($_SESSION['UID'])) {
+  $uid = 1;
+} else {
+  // set $uid to the same value if the user is logged in
+  $uid = $_SESSION['UID'];
+}
+
+ ?>
 <!DOCTYPE html>
 <title>Profile Page</title>
 <head class = "a1">
@@ -20,7 +33,21 @@
             <div id="profile">
                 <img src="images/user2.png" alt="user icon">
                 <div class="dropdown" >
-                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Name of user
+                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+                        <?php
+                        if(isset($_SESSION['UID'])){
+                            $sql_fetch = "select * from users where uid = $uid";
+                            $retval_fetch = mysqli_query($conn, $sql_fetch);
+                            if (mysqli_num_rows($retval_fetch) > 0) {
+                                $row_fetch = mysqli_fetch_assoc($retval_fetch);
+                                echo $row_fetch['User_name'];
+                            }
+                        }
+                        else{
+                            echo"Hello There";
+                        }                   
+                        
+                    ?>
                     <span class="caret"></span></button>
                     <ul class="dropdown-menu">
                     <li><a class = 'dropdown-item' href="profile_page.php">Account</a></li>
