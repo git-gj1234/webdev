@@ -66,6 +66,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         #imgg{
             width: 10em;
         }
+        .red{
+            color : red;
+        }
     </style>
 </head>
 <body>
@@ -123,29 +126,50 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             
                     <?php
                     $conn = mysqli_connect("localhost", "root", "", "store");
-                    $sql = "select * from store_inv";
+                    $sql = "select * from store_inv order by quan";
                     $retval = mysqli_query($conn, $sql);
                     if(mysqli_num_rows($retval)>0){
                         while ($row = mysqli_fetch_assoc($retval)){
-                            echo "<tr>";
-                            echo "<td>{$row['PID']}</td>";
-                            echo "<td><img src=\"{$row['link']}\" style=\"width:50px;height:auto;\"></td>";
-                            echo "<td>{$row['Name']}</td>";
-                            echo "<td>";
-                            $pid= $row['PID'];
-                            $a="cart";
-                            $a .=$pid; ?>
-                            <div id="<?php echo $a; ?>">
-                                <button id="minus" class="btn btn-outline-dark btn-sm" onclick="updateInv('subraction.php', '<?php echo $pid; ?>','<?php echo $a; ?>')" data-pid="<?php echo $pid; ?>">-</button>
-                                <span id="quan" style="width:50px;"><?php echo $row['quan']; ?></span>
-                                <button id="plus" class="btn btn-outline-dark btn-sm" onclick="updateInv('addition.php', '<?php echo $pid; ?>','<?php echo $a; ?>')" data-pid="<?php echo $pid; ?>">+</button>
-                            </div>
-                            <?php 
-                            echo "</td>";
-                            echo "<td><span>&#8377;</span>{$row['price']}</td>";
-                            echo "<td>{$row['category']}</td>";
-                            echo "<td>{$row['info']}</td>";
-                            echo "</tr>";
+                            if($row["quan"] <= 5){
+                                echo "<td><span style=\"color: red;\">{$row['PID']}</td>";
+                                echo "<td><span style=\"color: red;\"><img src=\"{$row['link']}\" style=\"width:50px;height:auto;\"></td>";
+                                echo "<td><span style=\"color: red;\">{$row['Name']}</td>";
+                                echo "<td><span style=\"color: red;\">";
+                                $pid= $row['PID'];
+                                $a="cart";
+                                $a .=$pid; ?>
+                                <div id="<?php echo $a; ?>">
+                                    <button id="minus" class="btn btn-outline-dark btn-sm" onclick="updateInv('subraction.php', '<?php echo $pid; ?>','<?php echo $a; ?>')" data-pid="<?php echo $pid; ?>">-</button>
+                                    <span id="quan" style="width:50px;"><?php echo $row['quan']; ?></span>
+                                    <button id="plus" class="btn btn-outline-dark btn-sm" onclick="updateInv('addition.php', '<?php echo $pid; ?>','<?php echo $a; ?>')" data-pid="<?php echo $pid; ?>">+</button>
+                                </div>
+                                <?php 
+                                echo "</td>";
+                                echo "<td><span style=\"color: red;\"><span>&#8377;</span>{$row['price']}</td>";
+                                echo "<td><span style=\"color: red;\">{$row['category']}</td>";
+                                echo "<td><span style=\"color: red;\">{$row['info']}</td>";
+                                echo "</tr>";
+                            }
+                            else{
+                                echo "<td>{$row['PID']}</td>";
+                                echo "<td><img src=\"{$row['link']}\" style=\"width:50px;height:auto;\"></td>";
+                                echo "<td>{$row['Name']}</td>";
+                                echo "<td>";
+                                $pid= $row['PID'];
+                                $a="cart";
+                                $a .=$pid; ?>
+                                <div id="<?php echo $a; ?>">
+                                    <button id="minus" class="btn btn-outline-dark btn-sm" onclick="updateInv('subraction.php', '<?php echo $pid; ?>','<?php echo $a; ?>')" data-pid="<?php echo $pid; ?>">-</button>
+                                    <span id="quan" style="width:50px;"><?php echo $row['quan']; ?></span>
+                                    <button id="plus" class="btn btn-outline-dark btn-sm" onclick="updateInv('addition.php', '<?php echo $pid; ?>','<?php echo $a; ?>')" data-pid="<?php echo $pid; ?>">+</button>
+                                </div>
+                                <?php 
+                                echo "</td>";
+                                echo "<td><span>&#8377;</span>{$row['price']}</td>";
+                                echo "<td>{$row['category']}</td>";
+                                echo "<td>{$row['info']}</td>";
+                                echo "</tr>";
+                            }
                         }
                     }?>
                 </tbody>

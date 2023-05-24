@@ -68,7 +68,7 @@ $conn = mysqli_connect("localhost", "root", "", "store");
         </thead>
         <tbody>
             <?php 
-            $sql = "Select * from orders order by date_of_delivery desc";
+            $sql = "Select * from orders order by oid";
             $retval = mysqli_query($conn, $sql);
             if(mysqli_num_rows($retval)>0) {
                 while ($row = mysqli_fetch_assoc($retval)){
@@ -164,37 +164,39 @@ $conn = mysqli_connect("localhost", "root", "", "store");
                     <h6 style="text-align: center;"> Delivery details</h6>
                     <?php
                     $did=$row['DID'];
-                    $sql2 = "Select * from delivery_personnel where did=$did";
-                    $retval2 = mysqli_query($conn, $sql2);
-                    if(mysqli_num_rows($retval2)>0) {
-                        while ($row2 = mysqli_fetch_assoc($retval2)){
-                            ?>
-                            <div class="table-responsive">          
-                            <table class="table table-hover  table-bordered table-condensed ">
-                                <tbody>
-                            <tr>
-                                <th class="table-dark" style="font-weight: normal;">Name</th>
-                            <td><?php echo  $row2['Delivery_name'] ?></td>
-                            </tr>
-                            <tr>
-                                <th class="table-dark" style="font-weight: normal;">Aadhaar Number</th>
-                            <td><?php echo  $row2['aadhaar'] ?></td>
-                            </tr>
-                            <tr>
-                                <th class="table-dark" style="font-weight: normal;">Phone Number</th>
-                            <td><?php echo  $row2['phone_number'] ?></td>
-                            </tr>
-                            <tr>
-                                <th class="table-dark" style="font-weight: normal;">License Number</th>
-                            <td><?php echo  $row2['License_number'] ?></td>
-                            </tr>
-                            
-                        </tbody>
-                        </table>
-                        </div>
-                            <?php
+                    if($did!= NULL){
+                        $sql2 = "Select * from delivery_personnel where did=$did";
+                        $retval2 = mysqli_query($conn, $sql2);
+                        if(mysqli_num_rows($retval2)>0 && $did != "") {
+                            while ($row2 = mysqli_fetch_assoc($retval2)){
+                                ?>
+                                <div class="table-responsive">          
+                                <table class="table table-hover  table-bordered table-condensed ">
+                                    <tbody>
+                                <tr>
+                                    <th class="table-dark" style="font-weight: normal;">Name</th>
+                                <td><?php echo  $row2['Delivery_name'] ?></td>
+                                </tr>
+                                <tr>
+                                    <th class="table-dark" style="font-weight: normal;">Aadhaar Number</th>
+                                <td><?php echo  $row2['aadhaar'] ?></td>
+                                </tr>
+                                <tr>
+                                    <th class="table-dark" style="font-weight: normal;">Phone Number</th>
+                                <td><?php echo  $row2['phone_number'] ?></td>
+                                </tr>
+                                <tr>
+                                    <th class="table-dark" style="font-weight: normal;">License Number</th>
+                                <td><?php echo  $row2['License_number'] ?></td>
+                                </tr>
+                                
+                            </tbody>
+                            </table>
+                            </div>
+                                <?php
+                            }
                         }
-                    }
+                    }    
                     ?>
                 </div>
 

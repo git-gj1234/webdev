@@ -57,7 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["name"], $_POST["passw
     } else {
         echo "<script language='javascript'>
             alert('user not found. Try logging in');
-            window.location.href='http://localhost/webdevlogin.php';
+            window.location.href='http://localhost/webdev/login.php';
             </script>
             ";
     }
