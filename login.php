@@ -49,14 +49,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["name"], $_POST["passw
             echo 'ok';
             
             echo "<script language='javascript'>
-            alert('password is wrong. Try logging in');
+            alert('Incorrect username or password');
             window.location.href='http://localhost/webdev/login.php';
             </script>
             ";
         }
     } else {
         echo "<script language='javascript'>
-            alert('user not found. Try logging in');
+            alert('User not found. Sign up if you are a new user. Contact customer support if you think this is wrong');
             window.location.href='http://localhost/webdev/login.php';
             </script>
             ";
